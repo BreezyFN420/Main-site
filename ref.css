@@ -1015,17 +1015,6 @@ body.theme-network {
 .profile-footer { display: flex; justify-content: space-between; gap: 18px; padding: 20px clamp(20px, 5vw, 72px); color: var(--profile-muted); border-top: 1px solid var(--profile-line); font-size: .68rem; }
 .profile-footer a { color: var(--profile-mint); text-decoration: none; }
 .profile-footer a:hover { text-decoration: underline; }
-.editor-dialog { width: min(92vw, 820px); padding: 0; border: 1px solid var(--profile-line); border-radius: 12px; background: #000; color: var(--profile-text); box-shadow: 0 24px 90px rgba(0,0,0,.7); }
-.editor-dialog::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(5px); }
-.editor-panel { display: grid; gap: 12px; padding: 26px; }
-.editor-panel h2 { font-size: 1.25rem; }
-.editor-close { position: absolute; top: 12px; right: 14px; border: 0; background: transparent; color: var(--profile-muted); cursor: pointer; font-size: 1.4rem; }
-.editor-status { color: var(--profile-muted); font-size: .76rem; }
-.editor-login { width: fit-content; color: var(--profile-mint); font-size: .76rem; }
-.editor-source { min-height: 360px; width: 100%; resize: vertical; padding: 14px; border: 1px solid var(--profile-line); border-radius: 8px; background: #080b11; color: var(--profile-text); font: .72rem/1.55 'JetBrains Mono', monospace; }
-.editor-actions { display: flex; justify-content: flex-end; gap: 9px; }
-.editor-actions button { border: 1px solid var(--profile-mint); border-radius: 7px; padding: 8px 12px; background: rgba(158,230,194,.1); color: var(--profile-mint); cursor: pointer; font: 700 .72rem 'Inter', system-ui, sans-serif; }
-.editor-actions button:hover { background: var(--profile-mint); color: #15221c; }
 @keyframes profile-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes profile-rainbow-flow { from { background-position: 0% 50%; } to { background-position: 320% 50%; } }
 @keyframes profile-rainbow-glow {
