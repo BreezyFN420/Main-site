@@ -86,9 +86,70 @@
   <footer class="profile-footer">
     <span>Made by a loser with a pc</span>
   </footer>
+  <dialog id="editor-dialog" class="editor-dialog">
+    <form method="dialog" class="editor-panel">
+      <button class="editor-close" value="cancel" aria-label="Close editor">×</button>
+      <p class="eyebrow">private owner area</p>
+      <h2>edit site source</h2>
+      <p class="editor-status" id="editor-status">Checking your GitHub session...</p>
+      <a class="editor-login" href="/api/auth/github">login with GitHub</a>
+      <textarea id="site-source" class="editor-source" spellcheck="false" aria-label="Site source"></textarea>
+      <div class="editor-actions">
+        <button type="button" id="editor-load">load current site</button>
+        <button type="button" id="editor-save">save to GitHub</button>
+      </div>
+    </form>
+  </dialog>
   <script>
     (() => {
+      const editorDialog = document.querySelector('#editor-dialog');
+      const editorStatus = document.querySelector('#editor-status');
+      const source = document.querySelector('#site-source');
+      const setEditorStatus = (message) => { editorStatus.textContent = message; };
+      const loadSiteSource = async () => {
+        try {
+          const response = await fetch('/api/site');
+          if (!response.ok) throw new Error('unauthorized');
+          source.value = await response.text();
+          setEditorStatus('Owner session active. Changes save to GitHub.');
+        } catch {
+          setEditorStatus('Owner login required.');
+          source.disabled = true;
+        }
+      };
+      const openEditor = () => {
+        editorDialog.showModal();
+        loadSiteSource();
+      };
+      document.querySelector('#editor-dialog').addEventListener('close', () => {
+        source.disabled = false;
+      });
+      document.querySelector('#editor-load').addEventListener('click', loadSiteSource);
+      document.querySelector('#editor-save').addEventListener('click', async () => {
+        if (!source.value || source.disabled) return;
+        setEditorStatus('Saving to GitHub...');
+        try {
+          const response = await fetch('/api/site', { method: 'PUT', headers: { 'Content-Type': 'text/plain' }, body: source.value });
+          if (!response.ok) throw new Error('save failed');
+          setEditorStatus('Saved. Refresh the page to see the update.');
+        } catch {
+          setEditorStatus('Save failed. Check your owner session and try again.');
+        }
+      });
+
       const banner = document.querySelector('.profile-banner');
+      let bannerClicks = 0;
+      let bannerClickTimer;
+      banner.addEventListener('click', () => {
+        bannerClicks += 1;
+        clearTimeout(bannerClickTimer);
+        bannerClickTimer = setTimeout(() => { bannerClicks = 0; }, 4000);
+        if (bannerClicks === 20) {
+          bannerClicks = 0;
+          clearTimeout(bannerClickTimer);
+          openEditor();
+        }
+      });
       const bannerOptions = [
         'Banners/3998-death-note.png',
         'Banners/5023-l-death-note.png',
