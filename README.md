@@ -4,7 +4,9 @@
 
 The profile includes an owner-only GitHub OAuth editor at `/api/auth/github`. The frontend does not contain a password or GitHub secret.
 
-For Cloudflare Pages, add these encrypted environment variables and deploy the `functions/` directory:
+For Cloudflare Pages, set the project root to this repository, leave the build command empty, and use `.` as the build output directory. Do not use `npx wrangler deploy`; that is the Worker deploy command and will fail for a Pages project. If a deploy command is required, use `npx wrangler pages deploy . --project-name kvpll`.
+
+Add these encrypted environment variables and deploy the `functions/` directory with the Pages project:
 
 - `GITHUB_CLIENT_ID`
 - `GITHUB_CLIENT_SECRET`
