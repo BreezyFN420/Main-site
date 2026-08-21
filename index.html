@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="kvpll's personal profile and coding references.">
+  <title>Kvpll — about me</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="ref.css">
+</head>
+<body class="profile-page">
+  <nav class="profile-nav" aria-label="Primary navigation">
+    <a class="nav-mark" href="#top" aria-label="Back to the top">kvpll</a>
+    <div class="profile-nav-links">
+      <a class="profile-nav-link active" href="#about">about</a>
+      <a class="profile-nav-link" href="#links">links</a>
+      <a class="profile-nav-link profile-nav-reference" href="https://references.kvpll.com" target="_blank" rel="noreferrer">references <span>↗</span></a>
+    </div>
+  </nav>
+
+  <main id="top" class="profile-shell">
+    <section id="about" class="profile-card profile-intro" aria-labelledby="profile-name">
+      <div class="profile-banner" aria-hidden="true"></div>
+      <div class="profile-content">
+        <div class="avatar"><img src="1495-l-from-death-note.png" alt="L from Death Note"></div>
+        <div class="profile-heading">
+          <p class="eyebrow">Chud with a computer</p>
+          <h1 id="profile-name">kvpll</h1>
+          <p class="handle">@kvpll <span class="verified" title="Verified profile">✓</span></p>
+        </div>
+        <span class="pronouns">they / them</span>
+        <p class="profile-bio">A chud with a computer who does coding and other tech related bullshit for fun because why not, some of you may know me by my irl name, you know who you are...</p>
+        <div class="profile-meta">
+          <span>⌁ usually online</span>
+          <span>⌖ earth, probably</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="links" class="profile-section" aria-labelledby="links-title">
+      <div class="section-heading">
+        <p class="eyebrow">find me elsewhere</p>
+        <h2 id="links-title">my links</h2>
+      </div>
+      <div class="link-grid">
+        <a class="profile-link profile-link-accent" href="https://references.kvpll.com" target="_blank" rel="noreferrer">
+          <span class="link-icon">⌁</span><span><strong>coding + exam references</strong><small>snippets, notes & study material</small></span><span class="link-arrow">↗</span>
+        </a>
+        <a class="profile-link" href="https://m.twitch.tv/kvpll/home" target="_blank" rel="noreferrer">
+          <span class="link-icon twitch-icon"><img src="twitch.png" alt="Twitch"></span><span><strong>Twitch</strong><small>watch me live on Twitch</small></span><span class="link-arrow">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="profile-section addons" aria-labelledby="addons-title">
+      <div class="section-heading">
+        <p class="eyebrow">currently in the workshop</p>
+        <h2 id="addons-title">things I’m into</h2>
+      </div>
+      <div class="addon-list">
+        <span class="addon"><b>01</b> web development</span>
+        <span class="addon"><b>02</b> game exploiting</span>
+        <span class="addon"><b>03</b> self hosting</span>
+      </div>
+    </section>
+
+    <section class="profile-note suggestion-box" aria-labelledby="suggestion-title">
+      <span class="note-mark" aria-hidden="true">+</span>
+      <div class="suggestion-content">
+        <p class="eyebrow">help shape the next update</p>
+        <h2 id="suggestion-title">More profile addons?</h2>
+        <p class="suggestion-copy">Suggest a now-playing card, guestbook, project shelf, visitor counter, custom status, or something stranger.</p>
+        <form id="suggestion-form" class="suggestion-form" data-save-endpoint="" novalidate>
+          <label for="suggestion">Your suggestion</label>
+          <textarea id="suggestion" name="suggestion" rows="6" maxlength="10000" placeholder="What should I add next?" required></textarea>
+          <div class="suggestion-form-footer">
+            <span id="word-count" class="word-count" aria-live="polite">0 / 1,000 words</span>
+            <button type="submit" class="suggestion-submit">send suggestion</button>
+          </div>
+          <p id="suggestion-status" class="suggestion-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="profile-footer">
+    <span>Made by a loser with a pc</span>
+  </footer>
+  <script>
+    (() => {
+      const banner = document.querySelector('.profile-banner');
+      const bannerOptions = [
+        'Banners/3998-death-note.png',
+        'Banners/5023-l-death-note.png',
+        'Banners/7538-death-note.png',
+        'Banners/I am L.png'
+      ];
+      const previousBanner = localStorage.getItem('profile-banner');
+      const availableBanners = bannerOptions.filter((option) => option !== previousBanner);
+      const selectedBanner = availableBanners[Math.floor(Math.random() * availableBanners.length)];
+      banner.style.backgroundImage = `url("${selectedBanner}")`;
+      banner.style.backgroundPosition = 'center';
+      banner.style.backgroundSize = '100% 100%';
+      localStorage.setItem('profile-banner', selectedBanner);
+
+      const form = document.querySelector('#suggestion-form');
+      const input = document.querySelector('#suggestion');
+      const count = document.querySelector('#word-count');
+      const status = document.querySelector('#suggestion-status');
+      const maxWords = 1000;
+
+      const getWords = (value) => value.match(/\S+/g) || [];
+
+      const updateCount = () => {
+        const words = getWords(input.value);
+        count.textContent = `${words.length.toLocaleString()} / ${maxWords.toLocaleString()} words`;
+        count.classList.toggle('over-limit', words.length > maxWords);
+      };
+
+      input.addEventListener('input', updateCount);
+      updateCount();
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const value = input.value.trim();
+        const words = getWords(value);
+        status.textContent = '';
+
+        if (!value) {
+          status.textContent = 'Write a suggestion first.';
+          return;
+        }
+        if (words.length > maxWords) {
+          status.textContent = 'Please keep your suggestion under 1,000 words.';
+          return;
+        }
+        if (/[<>]/.test(value)) {
+          status.textContent = 'Please send plain text only. Markup is not accepted.';
+          return;
+        }
+
+        const endpoint = form.dataset.saveEndpoint.trim();
+        if (!endpoint) {
+          status.textContent = 'The suggestion box is ready, but saving is not connected yet.';
+          return;
+        }
+
+        try {
+          await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ suggestion: value })
+          });
+          status.textContent = 'Thanks, your suggestion was sent.';
+          form.reset();
+          updateCount();
+        } catch {
+          status.textContent = 'Could not send the suggestion right now.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
